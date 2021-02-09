@@ -5,7 +5,7 @@ public class Game {
     private Room map[] ;
     Npc n;
 
-    public Game(){
+    public Game() {
         
 
         //Skapa rum!
