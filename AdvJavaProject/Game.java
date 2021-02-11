@@ -1,29 +1,29 @@
+import java.awt.Color;
 
 public class Game {
     private Gui gui;
     private Room room1, room2, room3, room4;
     private Room map[] ;
-    Npc n;
 
     public Game(){
         
 
         //Skapa rum!
-        room1 = new Room("Vardagsrum(r1)","Stor och fult med en soffa");
-        room2 = new Room("Hall(r2)", "liten, trång med ful tapet");
-        room3 = new Room("sovrum1(r3)", "liten, trång med rosa tapet");
-        room4 = new Room("sovrum2(r4)", "stor, trång med blå tapet ");
+        room1 = new Room("(Room1) \n Vardagsrum ","Stor och fult med en soffa");
+        room2 = new Room("(Room2) \n Hall ", "liten, trång med ful tapet");
+        room3 = new Room("(Room3) \n sovrum1 ", "liten, trång med rosa tapet");
+        room4 = new Room("(Room4) \n sovrum2 ", "stor, trång med blå tapet ");
         
         map = new Room[4];
         map[0] = room1;  map[1] = room2; map[2] = room3; map[3] = room4;
 
         //Gameobjects
         GameObject lampa = new GameObject("Taklampa", false);
-        GameObject kanin = new GameObject("Liten vit kanin",true);
-        GameObject stol = new GameObject("vit stol",false);
-        GameObject kudde = new GameObject("blå kudde",false);
+        GameObject kanin = new GameObject("kanin",true);
+        GameObject stol = new GameObject("stol",false);
+        GameObject kudde = new GameObject("kudde",false);
        
-        Container box = new Container("En blå låda", false, true);
+        Container box = new Container("BLUE BOX", false, true);
         
         room1.addObject(kanin); room1.addObject(box);
         room2.addObject(lampa); room2.addObject(box);
@@ -32,66 +32,147 @@ public class Game {
 
 
         Person newPlayer1 = new Person("Spelare1");        
-        //add person till splelet -player-
-        room1.addNpc(newPlayer1);
-        //npc.playerPosition=rumIndex;
-        int rumIndex=0;
-        //int spelarePos=rumIndex;
-        
+        //add person till splelet 
 
-        //add grejer
-        newPlayer1.getInventory().addObject(lampa);
-
-        Inventory inventory = new Inventory(8);
+        Inventory inventory = new Inventory(4);
         inventory.addObject(kanin);
-        inventory.addObject(lampa);
-        inventory.addObject(lampa);
         inventory.addObject(lampa);
         inventory.addObject(kudde);
         inventory.addObject(stol);
 
         //Starta guit!
         this.gui = new Gui();
-                
-        while (true) {
+
+        boolean gameon=true;        
+        int rumIndex=0;
+
+        while (gameon) {
 
             String command = gui.getCommand();
             if (!command.equals("-1")) {
 
-                if (command.equals("1")) {
-                    rumIndex  = 0;
+                 //Rum 1 
+                if (command.equals("1")  ) {
+                  // rumIndex  = 0;
+                   if (rumIndex == 1 ){
+                      rumIndex = 0;
+                      gui.panel.setBackground(Color.GREEN);
+                    }
+                   
+                    
                 }
 
                 if (command.equals("2")) {
+                    //Rum 2 rumIndex  = 1;
+                    if (rumIndex == 0 || rumIndex== 2){
+                        rumIndex = 1;
+                        gui.panel.setBackground(Color.GREEN);
 
-                    rumIndex = 1;
+                    }
+                    
                 }
+                         if (command.equals("3")) {
+                        //Rum 3 rumIndex  = 2;
+                            if (rumIndex == 1 || rumIndex== 3){
+                            rumIndex = 2;
+                            gui.panel.setBackground(Color.GREEN);
+    
+                        }
+                        else {
+                            gui.panel.setBackground(Color.RED);
+ 
+                        }
+                       
+                    }
+                        if (command.equals("4")) {
+                            //Rum 4 rumIndex= 3;
+                            if (rumIndex == 2){
+                                rumIndex = 3;
+                                gui.panel.setBackground(Color.GREEN);
+                                }
+                            
+                       
+                         }
 
-                if (command.equals("3")) {
-                    rumIndex = 2;
-
-                }
-
-                if (command.equals("4")) {
-                    rumIndex = 3;
-                }
-                //visar rum info
                 
-                gui.setShowRoom1(map[0].toString());
-                gui.setShowRoom2(map[1].toString());
-                gui.setShowRoom3(map[2].toString());
-                gui.setShowRoom4(map[3].toString());
-              
-            }
-                gui.setShowPlayer(newPlayer1,map[rumIndex],rumIndex );
+                //take 
+                if (command.contains("add")  ) {
+                    
+                       if (command.contains("stol")  ) {
+                            map[rumIndex].removeObject( stol);
+                            newPlayer1.getInventory().addObject(stol);
+                         }
+                         if (command.contains("kanin")  ) {
+                            map[rumIndex].removeObject( kanin);
+                            newPlayer1.getInventory().addObject(kanin);
+                         }
+                         if (command.contains("lampa")  ) {
+                            map[rumIndex].removeObject( lampa);
+                            newPlayer1.getInventory().addObject(lampa);
+                         }
+                         if (command.contains("kudde")  ) {
+                            map[rumIndex].removeObject( kudde);
+                            newPlayer1.getInventory().addObject(kudde);
+                         }
+                
+                } //slut take              
 
+                //****** lämna 
+                if (command.contains("give")  ) {
+
+                    if (command.contains("stol")  ) {
+                        map[rumIndex].addObject(stol );
+                       newPlayer1.getInventory().removeObject(stol);
+                    }
+                    if (command.contains("kudde")  ) {
+                        map[rumIndex].addObject(kudde );
+                       newPlayer1.getInventory().removeObject(kudde);
+                    }
+                    if (command.contains("lampa")  ) {
+                        map[rumIndex].addObject(lampa );
+                       newPlayer1.getInventory().removeObject(lampa);
+                    }
+                    if (command.contains("kanin")  ) {
+                        map[rumIndex].addObject(kanin );
+                       newPlayer1.getInventory().removeObject(kanin);
+                    }
+                }//slut lämna
+                
+                if (command.equals("slut")  ) {
+                    
+                    gui.setMessage("Game over");
+                    gameon=false;
+  
+                }
+                            
+            } 
+            
+        
+
+                gui.setShowPlayer(newPlayer1,map[rumIndex],rumIndex );
                 gui.setShowInventory(inventory);
 
 
-               
+                gui.setShowRoom1("\n "+map[0]);
+                gui.setShowPlayer(newPlayer1,map[rumIndex],rumIndex );
+
+
+                gui.setShowRoom2("\n "+map[1]);
+                gui.setShowPlayer(newPlayer1,map[rumIndex],rumIndex );
+
+
+                gui.setShowRoom3("\n "+map[2]);
+                gui.setShowPlayer(newPlayer1,map[rumIndex],rumIndex );
+
+
+                gui.setShowRoom4("\n "+map[3]);
+                gui.setShowPlayer(newPlayer1,map[rumIndex],rumIndex );
+
+                gui.setMessage("Game over");
+
         }
 
-        
+ 
     }
 
 

@@ -1,6 +1,6 @@
 
 
-public class Room {
+   public class Room  {
     private String name;
     private String description;
     private Inventory inventory;
@@ -14,7 +14,7 @@ public class Room {
     }
     public void addNpc(Person person) {
 
-        this.person[0] = person; //TODO Fixa fler personer
+        this.person[0] = person; 
     }
 
     public Person getPersons(){
@@ -23,11 +23,14 @@ public class Room {
     public void addObject(GameObject go){
         this.inventory.addObject(go);
     }
-    public String toString(){
-        return name+" : "+description +"\n" +inventory;
-    }
+        //remove 
+        public void removeObject(GameObject go) {
+             this.inventory.removeObject(go);
 
-        //show metod
+        }
+        public String toString(){
+            return name+" : "+description +"\n" +inventory;
+        }
 
 
 }

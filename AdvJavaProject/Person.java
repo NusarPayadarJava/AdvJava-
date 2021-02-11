@@ -8,6 +8,11 @@ public class Person extends Npc{
         super(name);
     }
 
+	public void giveObject() {
+	}
+
+	
+
 
 	
    
