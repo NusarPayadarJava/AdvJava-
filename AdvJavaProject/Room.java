@@ -7,10 +7,10 @@
     private Person[] person;
 
     public Room(String roomName, String roomDescription){
-        this.person = new Person[5];
+        this.person = new Person[4];
         this.name = roomName;
         this.description= roomDescription;
-        this.inventory = new Inventory(8);
+        this.inventory = new Inventory(4);
     }
     public void addNpc(Person person) {
 
@@ -22,14 +22,22 @@
     }
     public void addObject(GameObject go){
         this.inventory.addObject(go);
+        getInventory();
     }
         //remove 
         public void removeObject(GameObject go) {
+            getInventory();
+
              this.inventory.removeObject(go);
+             getInventory();
+
 
         }
         public String toString(){
             return name+" : "+description +"\n" +inventory;
+        }
+        public Inventory getInventory(){
+            return this.inventory;
         }
 
 

@@ -8,7 +8,7 @@ public class Game {
     public Game(){
         
 
-        //Skapa rum!
+        //Skapa fyra rum
         room1 = new Room("(Room1) \n Vardagsrum ","Stor och fult med en soffa");
         room2 = new Room("(Room2) \n Hall ", "liten, trång med ful tapet");
         room3 = new Room("(Room3) \n sovrum1 ", "liten, trång med rosa tapet");
@@ -17,7 +17,7 @@ public class Game {
         map = new Room[4];
         map[0] = room1;  map[1] = room2; map[2] = room3; map[3] = room4;
 
-        //Gameobjects
+        //skapa Gameobjects
         GameObject lampa = new GameObject("Taklampa", false);
         GameObject kanin = new GameObject("kanin",true);
         GameObject stol = new GameObject("stol",false);
@@ -25,16 +25,17 @@ public class Game {
        
         Container box = new Container("BLUE BOX", false, true);
         
+        //add game obj till rum
         room1.addObject(kanin); room1.addObject(box);
         room2.addObject(lampa); room2.addObject(box);
         room3.addObject(stol); room3.addObject(box);
         room4.addObject(kudde); room4.addObject(box);
 
-
-        Person newPlayer1 = new Person("Spelare1");        
-        //add person till splelet 
-
+        //add Spelare1 till splelet 
+        Person newPlayer1 = new Person("Spelare1");
+        // skapa inventury array [4]
         Inventory inventory = new Inventory(4);
+        //add game obj till inventury listan
         inventory.addObject(kanin);
         inventory.addObject(lampa);
         inventory.addObject(kudde);
@@ -42,69 +43,83 @@ public class Game {
 
         //Starta guit!
         this.gui = new Gui();
-
+        
+        //spelet igång så länge true
         boolean gameon=true;        
         int rumIndex=0;
 
         while (gameon) {
 
             String command = gui.getCommand();
+           
             if (!command.equals("-1")) {
 
                  //Rum 1 
                 if (command.equals("1")  ) {
                   // rumIndex  = 0;
-                   if (rumIndex == 1 ){
-                      rumIndex = 0;
+                   if (rumIndex == 2 || rumIndex == 3 ){
+                      gui.panel.setBackground(Color.RED);
+                   }
+                    else{
+                        rumIndex = 0;
                       gui.panel.setBackground(Color.GREEN);
                     }
+                
                    
                     
                 }
 
                 if (command.equals("2")) {
                     //Rum 2 rumIndex  = 1;
-                    if (rumIndex == 0 || rumIndex== 2){
-                        rumIndex = 1;
+                    if (rumIndex == 3 ){
+                        gui.panel.setBackground(Color.RED);
+                     }
+                      else{
+                          rumIndex = 1;
                         gui.panel.setBackground(Color.GREEN);
-
-                    }
+                      }
                     
                 }
                          if (command.equals("3")) {
                         //Rum 3 rumIndex  = 2;
-                            if (rumIndex == 1 || rumIndex== 3){
-                            rumIndex = 2;
-                            gui.panel.setBackground(Color.GREEN);
-    
-                        }
-                        else {
+                        if (rumIndex ==  0 ){
                             gui.panel.setBackground(Color.RED);
+                         }
+                          else{
+                              rumIndex = 2;
+                            gui.panel.setBackground(Color.GREEN);
+                          }
  
                         }
                        
-                    }
+                    
                         if (command.equals("4")) {
                             //Rum 4 rumIndex= 3;
-                            if (rumIndex == 2){
-                                rumIndex = 3;
+                            if (rumIndex == 0 || rumIndex == 1 ){
+                                gui.panel.setBackground(Color.RED);
+                             }
+                              else{
+                                  rumIndex = 3;
                                 gui.panel.setBackground(Color.GREEN);
-                                }
+                              }
                             
                        
                          }
 
                 
-                //take 
+                //add  
                 if (command.contains("add")  ) {
                     
                        if (command.contains("stol")  ) {
-                            map[rumIndex].removeObject( stol);
+                        
+                            map[rumIndex].getInventory().removeObject( stol);
                             newPlayer1.getInventory().addObject(stol);
                          }
                          if (command.contains("kanin")  ) {
-                            map[rumIndex].removeObject( kanin);
+
                             newPlayer1.getInventory().addObject(kanin);
+                            map[rumIndex].getInventory().removeObject( kanin);
+
                          }
                          if (command.contains("lampa")  ) {
                             map[rumIndex].removeObject( lampa);
@@ -122,7 +137,7 @@ public class Game {
 
                     if (command.contains("stol")  ) {
                         map[rumIndex].addObject(stol );
-                       newPlayer1.getInventory().removeObject(stol);
+                        newPlayer1.getInventory().removeObject(stol);
                     }
                     if (command.contains("kudde")  ) {
                         map[rumIndex].addObject(kudde );
