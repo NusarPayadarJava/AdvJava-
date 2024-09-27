@@ -5,7 +5,7 @@ public class Game {
     private Room room1, room2, room3, room4;
     private Room map[] ;
 
-    public Game(){
+    public Game() {
         
 
         //Skapa fyra rum
